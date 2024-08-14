@@ -80,9 +80,21 @@ class OusterCloud : public OusterProcessingNodeBase {
             get_parameter("use_system_default_qos").as_bool();
         rclcpp::QoS system_default_qos = rclcpp::SystemDefaultsQoS();
         rclcpp::QoS sensor_data_qos = rclcpp::SensorDataQoS();
-        auto selected_qos =
-            use_system_default_qos ? system_default_qos : sensor_data_qos;
-
+        // auto selected_qos =
+        //    use_system_default_qos ? system_default_qos : sensor_data_qos;
+        
+        rclcpp::QoS selected_qos(1);
+        if (use_system_default_qos) {
+        selected_qos = rclcpp::SystemDefaultsQoS();
+        } else {
+            // custom QoS settings to ensure compatibility with intra-process communication
+            selected_qos
+                .reliability(rclcpp::ReliabilityPolicy::Reliable)  // use Reliable or BestEffort as required
+                .durability(rclcpp::DurabilityPolicy::Volatile)    // volatile durability for intra-process communication
+                .history(rclcpp::HistoryPolicy::KeepLast)
+                .keep_last(1);  // depth
+        }
+        
         auto proc_mask = get_parameter("proc_mask").as_string();
         auto tokens = impl::parse_tokens(proc_mask, '|');
 
