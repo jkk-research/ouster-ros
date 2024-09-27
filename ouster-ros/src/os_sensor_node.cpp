@@ -645,8 +645,8 @@ void OusterSensor::create_services() {
 }
 
 void OusterSensor::create_publishers() {
-    bool use_system_default_qos =
-        get_parameter("use_system_default_qos").as_bool();
+    bool use_system_default_qos = false;
+        // get_parameter("use_system_default_qos").as_bool();
     rclcpp::QoS system_default_qos = rclcpp::SystemDefaultsQoS();
     rclcpp::QoS sensor_data_qos = rclcpp::SensorDataQoS();
     // auto selected_qos =

@@ -76,8 +76,8 @@ class OusterCloud : public OusterProcessingNodeBase {
         auto ptp_utc_tai_offset =
             get_parameter("ptp_utc_tai_offset").as_double();
 
-        bool use_system_default_qos =
-            get_parameter("use_system_default_qos").as_bool();
+        bool use_system_default_qos = false;
+            // get_parameter("use_system_default_qos").as_bool();
         rclcpp::QoS system_default_qos = rclcpp::SystemDefaultsQoS();
         rclcpp::QoS sensor_data_qos = rclcpp::SensorDataQoS();
         // auto selected_qos =
@@ -85,7 +85,7 @@ class OusterCloud : public OusterProcessingNodeBase {
         
         rclcpp::QoS selected_qos(1);
         if (use_system_default_qos) {
-        selected_qos = rclcpp::SystemDefaultsQoS();
+            selected_qos = rclcpp::SystemDefaultsQoS();
         } else {
             // custom QoS settings to ensure compatibility with intra-process communication
             selected_qos
