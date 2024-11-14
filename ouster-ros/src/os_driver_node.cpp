@@ -54,8 +54,8 @@ class OusterDriver : public OusterSensor {
         auto proc_mask = get_parameter("proc_mask").as_string();
         auto tokens = impl::parse_tokens(proc_mask, '|');
 
-        bool use_system_default_qos =
-            get_parameter("use_system_default_qos").as_bool();
+        bool use_system_default_qos = false;
+            // get_parameter("use_system_default_qos").as_bool();
         rclcpp::QoS system_default_qos = rclcpp::SystemDefaultsQoS();
         rclcpp::QoS sensor_data_qos = rclcpp::SensorDataQoS();
         auto selected_qos =

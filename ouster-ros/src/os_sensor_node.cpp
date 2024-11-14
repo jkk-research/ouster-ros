@@ -654,7 +654,13 @@ void OusterSensor::create_publishers() {
     
     rclcpp::QoS selected_qos(1);
     if (use_system_default_qos) {
-       selected_qos = rclcpp::SystemDefaultsQoS();
+       //selected_qos = rclcpp::SystemDefaultsQoS();
+       selected_qos
+            .reliability(rclcpp::ReliabilityPolicy::Reliable)  // use Reliable or BestEffort as required
+            .durability(rclcpp::DurabilityPolicy::Volatile)    // volatile durability for intra-process communication
+            .history(rclcpp::HistoryPolicy::KeepLast)
+            .keep_last(1);  // depth
+
     } else {
         // custom QoS settings to ensure compatibility with intra-process communication
         selected_qos
